@@ -108,7 +108,8 @@ def violating_points(cent):
     #     print(voilate)
     return voilate
 
-
+pTime =0
+cTime=0
 
 
 
