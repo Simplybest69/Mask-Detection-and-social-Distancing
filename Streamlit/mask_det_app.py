@@ -3,7 +3,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
-#import time
+import time
 from PIL import Image
 from scipy.spatial import distance as dist
 #import os
