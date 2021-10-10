@@ -126,7 +126,7 @@ class VideoTransformer(VideoTransformerBase):
              #img = frame.to_ndarray(format="bgr24")
              
              # face mask or not
-             frame = cv2.resize(frame, (600,600))
+             #frame = cv2.resize(frame, (600,600))
              (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
 
 
