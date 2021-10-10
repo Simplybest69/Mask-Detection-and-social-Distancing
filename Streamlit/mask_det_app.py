@@ -184,7 +184,6 @@ class VideoTransformer(VideoTransformerBase):
 
              return frame
 
-webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
 
 
 
