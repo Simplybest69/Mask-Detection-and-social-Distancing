@@ -217,7 +217,6 @@ def run():
             st.markdown( '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',unsafe_allow_html=True)
             webrtc_streamer(client_settings=ClientSettings(rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},media_stream_constraints={"video": True, "audio": False},),video_transformer_factory=VideoTransformer,key="normal",)
         #webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
-    if choice == 'video':
             
 run()
 
