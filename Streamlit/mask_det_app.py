@@ -4,6 +4,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 #import time
+from PIL import Image
 from scipy.spatial import distance as dist
 #import os
 import cv2
@@ -187,11 +188,11 @@ class VideoTransformer(VideoTransformerBase):
 
 def run():
     st.title("Face Detection using OpenCV")
-    activities = ["Image", "Webcam","video"]
+    activities = ["Image", "Webcam"]
     # st.set_option('deprecation.showfileUploaderEncoding', False)
     st.sidebar.markdown("# Choose Input Source")
     choice = st.sidebar.selectbox("Choose among the given options:", activities)
-    link = '[©Developed by Spidy20](http://github.com/spidy20)'
+    #link = '[©Developed by Spidy20](http://github.com/spidy20)'
     st.sidebar.markdown(link, unsafe_allow_html=True)
     if choice == 'Image':
         st.markdown(
