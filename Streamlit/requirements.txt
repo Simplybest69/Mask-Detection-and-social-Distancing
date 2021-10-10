@@ -6,4 +6,4 @@ scipy==1.2.3
 opencv-python-headless==4.5.2.54
 streamlit-webrtc
 Pillow
-times== 0.7
+python-time== 0.3.0
