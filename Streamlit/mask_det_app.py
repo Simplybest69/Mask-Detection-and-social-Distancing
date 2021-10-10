@@ -188,32 +188,7 @@ class VideoTransformer(VideoTransformerBase):
 
 def run():
     st.title("Face Detection using OpenCV")
-    activities = ["Image", "Webcam"]
-    # st.set_option('deprecation.showfileUploaderEncoding', False)
-    st.sidebar.markdown("# Choose Input Source")
-    choice = st.sidebar.selectbox("Choose among the given options:", activities)
-    #link = '[©Developed by Spidy20](http://github.com/spidy20)'
-    #st.sidebar.markdown(link, unsafe_allow_html=True)
-    if choice == 'Image':
-        st.markdown(
-            '''<h4 style='text-align: left; color: #d73b5c;'>* Mask Detection"</h4>''',
-            unsafe_allow_html=True)
-        img_file = st.file_uploader("Choose an Image", type=['jpg', 'jpeg', 'jfif', 'png'])
-        if img_file is not None:
-            img = np.array(Image.open(img_file))
-            img1 = cv2.resize(img, (350, 350))
-            place_h = st.beta_columns(2)
-            place_h[0].image(img1)
-            st.markdown(
-                '''<h4 style='text-align: left; color: #d73b5c;'>* Increase & Decrease it to get better accuracy.</h4>''',
-                unsafe_allow_html=True)
-
-            # scale_factor = st.slider("Set Scale Factor Value", min_value=1.1, max_value=1.9, step=0.10, value=1.3)
-            # min_Neighbors = st.slider("Set Scale Min Neighbors", min_value=1, max_value=9, step=1, value=5)
-            # fd, count, orignal_image = face_detect(img, scale_factor, min_Neighbors)
-            place_h[1].image(fd)
-            
-            st.markdown(get_image_download_link(result, img_file.name, 'Download Image'), unsafe_allow_html=True)
+    activities = ["Covid Data Analysis", "Webcam"]
     if choice == 'Webcam':
             st.markdown( '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',unsafe_allow_html=True)
             webrtc_streamer(client_settings=ClientSettings(rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},media_stream_constraints={"video": True, "audio": False},),video_transformer_factory=VideoTransformer,key="normal",)
