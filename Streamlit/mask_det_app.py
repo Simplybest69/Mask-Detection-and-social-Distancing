@@ -190,13 +190,12 @@ class VideoTransformer(VideoTransformerBase):
 
 def run():
     st.write("""
-         # Mask Detection and Social Distancing
+         # Mask Detection and Social Distancing Detection
          """
          )
-    st.write("## Check sidebar for selecting the Activites")
     activities = ["Covid Data Analysis", "Webcam"]
-    st.sidebar.markdown("# Choose Input Source")
-    choice = st.sidebar.selectbox("Choose among the given options:", activities)
+    st.markdown("# Choose Input Source")
+    choice = st.selectbox("Choose among the given options:", activities)
     if choice == 'Webcam':
             st.markdown( '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',unsafe_allow_html=True)
             st.markdown( '''<h4 style='text-align: left; color: #3bd743;'>* Be patient this might take a min to load"</h4>''',unsafe_allow_html=True)
