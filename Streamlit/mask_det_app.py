@@ -7,7 +7,7 @@ import numpy as np
 from scipy.spatial import distance as dist
 #import os
 import cv2
-
+from streamlit_webrtc import VideoTransformerBase, webrtc_streamer, ClientSettings
 
 import streamlit as st
 st.write("""
@@ -114,7 +114,7 @@ def violating_points(cent):
     #     print(voilate)
     return voilate
 
-from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
+
 
 
 
