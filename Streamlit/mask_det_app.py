@@ -193,7 +193,7 @@ def run():
          # Mask Detection and Social Distancing
          """
          )
-    st.write("")
+    st.write("## Check sidebar for selecting the Activites")
     activities = ["Covid Data Analysis", "Webcam"]
     st.sidebar.markdown("# Choose Input Source")
     choice = st.sidebar.selectbox("Choose among the given options:", activities)
