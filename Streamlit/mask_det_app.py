@@ -124,7 +124,7 @@ class VideoTransformer(VideoTransformerBase):
 
     def transform(self, frame):
              #img = frame.to_ndarray(format="bgr24")
-             
+             outp = frame
              # face mask or not
              #frame = cv2.resize(frame, (600,600))
              (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
@@ -182,7 +182,7 @@ class VideoTransformer(VideoTransformerBase):
                  cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
                  cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
-             return frame
+             return outp
 
 
 
