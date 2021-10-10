@@ -11,11 +11,7 @@ import cv2
 from streamlit_webrtc import VideoTransformerBase, webrtc_streamer, ClientSettings
 
 import streamlit as st
-st.write("""
-         # Mask Detection and Social Distancing
-         """
-         )
-st.write("###########")
+
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
     # grab the dimensions of the frame and then construct a blob
@@ -187,12 +183,17 @@ class VideoTransformer(VideoTransformerBase):
 
 
 def run():
-    st.title("Face Detection using OpenCV")
+    st.write("""
+         # Mask Detection and Social Distancing
+         """
+         )
+    st.write("")
     activities = ["Covid Data Analysis", "Webcam"]
     st.sidebar.markdown("# Choose Input Source")
     choice = st.sidebar.selectbox("Choose among the given options:", activities)
     if choice == 'Webcam':
             st.markdown( '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',unsafe_allow_html=True)
+            st.markdown( '''<h4 style='text-align: left; color: #3bd743;'>* Be patient this might take a min to load"</h4>''',unsafe_allow_html=True)
             webrtc_streamer(client_settings=ClientSettings(rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},media_stream_constraints={"video": True, "audio": False},),video_transformer_factory=VideoTransformer,key="normal",)
         #webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
             
