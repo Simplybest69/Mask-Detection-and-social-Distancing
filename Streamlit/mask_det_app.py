@@ -15,9 +15,6 @@ st.write("""
          """
          )
 st.write("###########")
-file = st.file_uploader("Please upload an image file", type=["jpg", "png","jpeg"])
-choose_model = st.selectbox('Select a trained model:', ('EfficientNet','MobileNet'))
-
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
     # grab the dimensions of the frame and then construct a blob
@@ -124,9 +121,9 @@ class VideoTransformer(VideoTransformerBase):
 
     def transform(self, frame):
              img = frame.to_ndarray(format="bgr24")
-             outp = img
+             frame = img
              # face mask or not
-             frame = cv2.resize(img, (600,600))
+             #frame = cv2.resize(img, (600,600))
              (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
 
 
@@ -220,6 +217,8 @@ def run():
             st.markdown( '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',unsafe_allow_html=True)
             webrtc_streamer(client_settings=ClientSettings(rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},media_stream_constraints={"video": True, "audio": False},),video_transformer_factory=VideoTransformer,key="normal",)
         #webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
+    if choice == 'video':
+            
 run()
 
 
