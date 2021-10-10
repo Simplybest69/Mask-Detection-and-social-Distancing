@@ -193,7 +193,7 @@ def run():
     st.sidebar.markdown("# Choose Input Source")
     choice = st.sidebar.selectbox("Choose among the given options:", activities)
     #link = '[©Developed by Spidy20](http://github.com/spidy20)'
-    st.sidebar.markdown(link, unsafe_allow_html=True)
+    #st.sidebar.markdown(link, unsafe_allow_html=True)
     if choice == 'Image':
         st.markdown(
             '''<h4 style='text-align: left; color: #d73b5c;'>* Mask Detection"</h4>''',
