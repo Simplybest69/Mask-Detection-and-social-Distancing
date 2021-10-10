@@ -5,3 +5,4 @@ tensorflow==2.5.0rc0
 scipy==1.2.3
 opencv-python-headless==4.5.2.54
 streamlit-webrtc
+Pillow
