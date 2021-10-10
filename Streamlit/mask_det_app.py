@@ -177,10 +177,10 @@ class VideoTransformer(VideoTransformerBase):
                  cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
                  cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
                  # Find FPS
-                 cTime=time.time()
-                 fps=1/(cTime-pTime)
-                 pTime=cTime
-                 cv2.putText(frame,str(int(fps)),(10,70),cv2.FONT_ITALIC,2,(255,0,255),3)
+#                  cTime=time.time()
+#                  fps=1/(cTime-pTime)
+#                  pTime=cTime
+#                  cv2.putText(frame,str(int(fps)),(10,70),cv2.FONT_ITALIC,2,(255,0,255),3)
 
              return frame
 
