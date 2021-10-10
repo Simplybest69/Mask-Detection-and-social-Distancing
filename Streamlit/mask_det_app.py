@@ -182,7 +182,7 @@ class VideoTransformer(VideoTransformerBase):
                  cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
                  cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
-        return frame
+             return frame
 
 webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
 
