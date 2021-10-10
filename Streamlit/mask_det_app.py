@@ -124,65 +124,65 @@ class VideoTransformer(VideoTransformerBase):
 
     def transform(self, frame):
              img = frame.to_ndarray(format="bgr24")
-#              outp = frame
-#              # face mask or not
-#              #frame = cv2.resize(frame, (600,600))
-#              (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
+             outp = img
+             # face mask or not
+             frame = cv2.resize(img, (600,600))
+             (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
 
 
-#              #Finding distance if there are more than 1 people
-#              if(len(locs)>=1):
+             #Finding distance if there are more than 1 people
+             if(len(locs)>=1):
 
-#                  #Finding the Centriods b/w people
-#                  cent =find_centroids(locs)
-#                  # loop over the detected face locations and their corresponding
-#                  # locations
+                 #Finding the Centriods b/w people
+                 cent =find_centroids(locs)
+                 # loop over the detected face locations and their corresponding
+                 # locations
 
-#                  #Finding the voilating locations 
-#                  voilate = violating_points(cent)
+                 #Finding the voilating locations 
+                 voilate = violating_points(cent)
 
-#                  red=[0,0,255]
-#                  green =[0,255,0]    
-#                  distance="Not Near"
-#                  #For distance
-#                  for (i,(box,cen)) in enumerate(zip(locs,cent)):
-#                      # unpack the bounding box and predictions
-#                      color=green
-#                      startX, startY, endX, endY=box
-#                      (cx,cy) = cen
-#              #         print(i)
-#              #         print(i in voilate)
-#                      if(i in voilate):
-#                          color = red
-#                          distance="Near"
-#                      g=6
-#                      cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
-#                      cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
-#                      cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                 red=[0,0,255]
+                 green =[0,255,0]    
+                 distance="Not Near"
+                 #For distance
+                 for (i,(box,cen)) in enumerate(zip(locs,cent)):
+                     # unpack the bounding box and predictions
+                     color=green
+                     startX, startY, endX, endY=box
+                     (cx,cy) = cen
+             #         print(i)
+             #         print(i in voilate)
+                     if(i in voilate):
+                         color = red
+                         distance="Near"
+                     g=6
+                     cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
+                     cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
+                     cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
 
 
-#              #For Mask
-#              # loop over the detected face locations and their corresponding
-#              # locations
-#              for (box, pred) in zip(locs, preds):
-#                  # unpack the bounding box and predictions
-#                  (startX, startY, endX, endY) = box
-#                  (mask, withoutMask) = pred
+             #For Mask
+             # loop over the detected face locations and their corresponding
+             # locations
+             for (box, pred) in zip(locs, preds):
+                 # unpack the bounding box and predictions
+                 (startX, startY, endX, endY) = box
+                 (mask, withoutMask) = pred
 
-#                  # determine the class label and color we'll use to draw
-#                  # the bounding box and text
-#                  label = "Mask" if mask > withoutMask else "No Mask"
-#                  color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+                 # determine the class label and color we'll use to draw
+                 # the bounding box and text
+                 label = "Mask" if mask > withoutMask else "No Mask"
+                 color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
 
-#                  # include the probability in the label
-#                  label = "{} ".format(label)
+                 # include the probability in the label
+                 label = "{} ".format(label)
 
-#                  # display the label and bounding box rectangle on the output
-#                  # frame
-#                  cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-#                  cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+                 # display the label and bounding box rectangle on the output
+                 # frame
+                 cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                 cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
-             return img
+             return frame
 
 
 
