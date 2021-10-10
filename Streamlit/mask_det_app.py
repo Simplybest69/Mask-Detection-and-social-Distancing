@@ -3,9 +3,9 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
-import time
+#import time
 from scipy.spatial import distance as dist
-import os
+#import os
 import cv2
 
 
@@ -123,16 +123,66 @@ class VideoTransformer(VideoTransformerBase):
         self.i = 0
 
     def transform(self, frame):
-        img = frame.to_ndarray(format="bgr24")
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        
-        i =self.i+1
-        for (x, y, w, h) in gray:
-            cv2.rectangle(img, (x, y), (x + w, y + h), (95, 207, 30), 3)
-            cv2.rectangle(img, (x, y - 40), (x + w, y), (95, 207, 30), -1)
-            cv2.putText(img, 'F-' + str(i), (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
+             img = frame.to_ndarray(format="bgr24")
+             
+             # face mask or not
+             frame = cv2.resize(img, (600,600))
+             (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
 
-        return img
+
+             #Finding distance if there are more than 1 people
+             if(len(locs)>=1):
+
+                 #Finding the Centriods b/w people
+                 cent =find_centroids(locs)
+                 # loop over the detected face locations and their corresponding
+                 # locations
+
+                 #Finding the voilating locations 
+                 voilate = violating_points(cent)
+
+                 red=[0,0,255]
+                 green =[0,255,0]    
+                 distance="Not Near"
+                 #For distance
+                 for (i,(box,cen)) in enumerate(zip(locs,cent)):
+                     # unpack the bounding box and predictions
+                     color=green
+                     startX, startY, endX, endY=box
+                     (cx,cy) = cen
+             #         print(i)
+             #         print(i in voilate)
+                     if(i in voilate):
+                         color = red
+                         distance="Near"
+                     g=6
+                     cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
+                     cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
+                     cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+
+
+             #For Mask
+             # loop over the detected face locations and their corresponding
+             # locations
+             for (box, pred) in zip(locs, preds):
+                 # unpack the bounding box and predictions
+                 (startX, startY, endX, endY) = box
+                 (mask, withoutMask) = pred
+
+                 # determine the class label and color we'll use to draw
+                 # the bounding box and text
+                 label = "Mask" if mask > withoutMask else "No Mask"
+                 color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+
+                 # include the probability in the label
+                 label = "{} ".format(label)
+
+                 # display the label and bounding box rectangle on the output
+                 # frame
+                 cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                 cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+
+             return frame
 
 webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
 
@@ -181,101 +231,101 @@ run()
 
 
 
-print("[INFO] starting video stream...")
-vs = cv2.VideoCapture("test/bs1.mp4") 
-# vs = cv2.VideoCapture(0)# for direct cam
-# time.sleep(1.0)
-# vs = cv2.VideoCapture("")  # For video uncomment it
-pTime =0
-cTime=0
-cent=[]
-# loop over the frames from the video stream
-while True:
-    # grab the frame from the threaded video stream and resize it
-    # to have a maximum width of 400 pixels
-    cent=[]
-    # grab the frame from the threaded video stream and resize it
-    # to have a maximum width of 400 pixels
+# print("[INFO] starting video stream...")
+# vs = cv2.VideoCapture("test/bs1.mp4") 
+# # vs = cv2.VideoCapture(0)# for direct cam
+# # time.sleep(1.0)
+# # vs = cv2.VideoCapture("")  # For video uncomment it
+# pTime =0
+# cTime=0
+# cent=[]
+# # loop over the frames from the video stream
+# while True:
+#     # grab the frame from the threaded video stream and resize it
+#     # to have a maximum width of 400 pixels
+#     cent=[]
+#     # grab the frame from the threaded video stream and resize it
+#     # to have a maximum width of 400 pixels
     
-    (grabbed, frame) = vs.read() #For video uncomment it  or direct cam
+#     (grabbed, frame) = vs.read() #For video uncomment it  or direct cam
 
     
-#     frame= cv2.imread("test/p7.jpg") # For image uncomment it
-    frame = cv2.resize(frame, (600,600))
+# #     frame= cv2.imread("test/p7.jpg") # For image uncomment it
+#     frame = cv2.resize(frame, (600,600))
 
 
-    # detect faces in the frame and determine if they are wearing a
-    # face mask or not
-    (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
+#     # detect faces in the frame and determine if they are wearing a
+#     # face mask or not
+#     (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
     
     
-    #Finding distance if there are more than 1 people
-    if(len(locs)>=1):
+#     #Finding distance if there are more than 1 people
+#     if(len(locs)>=1):
         
-        #Finding the Centriods b/w people
-        cent =find_centroids(locs)
-        # loop over the detected face locations and their corresponding
-        # locations
+#         #Finding the Centriods b/w people
+#         cent =find_centroids(locs)
+#         # loop over the detected face locations and their corresponding
+#         # locations
 
-        #Finding the voilating locations 
-        voilate = violating_points(cent)
+#         #Finding the voilating locations 
+#         voilate = violating_points(cent)
 
-        red=[0,0,255]
-        green =[0,255,0]    
-        distance="Not Near"
-        #For distance
-        for (i,(box,cen)) in enumerate(zip(locs,cent)):
-            # unpack the bounding box and predictions
-            color=green
-            startX, startY, endX, endY=box
-            (cx,cy) = cen
-    #         print(i)
-    #         print(i in voilate)
-            if(i in voilate):
-                color = red
-                distance="Near"
-            g=6
-            cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
-            cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
-            cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+#         red=[0,0,255]
+#         green =[0,255,0]    
+#         distance="Not Near"
+#         #For distance
+#         for (i,(box,cen)) in enumerate(zip(locs,cent)):
+#             # unpack the bounding box and predictions
+#             color=green
+#             startX, startY, endX, endY=box
+#             (cx,cy) = cen
+#     #         print(i)
+#     #         print(i in voilate)
+#             if(i in voilate):
+#                 color = red
+#                 distance="Near"
+#             g=6
+#             cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
+#             cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
+#             cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
 
     
-    #For Mask
-    # loop over the detected face locations and their corresponding
-    # locations
-    for (box, pred) in zip(locs, preds):
-        # unpack the bounding box and predictions
-        (startX, startY, endX, endY) = box
-        (mask, withoutMask) = pred
+#     #For Mask
+#     # loop over the detected face locations and their corresponding
+#     # locations
+#     for (box, pred) in zip(locs, preds):
+#         # unpack the bounding box and predictions
+#         (startX, startY, endX, endY) = box
+#         (mask, withoutMask) = pred
 
-        # determine the class label and color we'll use to draw
-        # the bounding box and text
-        label = "Mask" if mask > withoutMask else "No Mask"
-        color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+#         # determine the class label and color we'll use to draw
+#         # the bounding box and text
+#         label = "Mask" if mask > withoutMask else "No Mask"
+#         color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
             
-        # include the probability in the label
-        label = "{} ".format(label)
+#         # include the probability in the label
+#         label = "{} ".format(label)
 
-        # display the label and bounding box rectangle on the output
-        # frame
-        cv2.putText(frame, label, (startX, startY - 10),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-        cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+#         # display the label and bounding box rectangle on the output
+#         # frame
+#         cv2.putText(frame, label, (startX, startY - 10),
+#             cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+#         cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
     
     
-    # Find FPS
-    cTime=time.time()
-    fps=1/(cTime-pTime)
-    pTime=cTime
-    cv2.putText(frame,str(int(fps)),(10,70),cv2.FONT_ITALIC,2,(255,0,255),3)
-    # show the output frame
-#     cv2.startWindowThread()
-    cv2.namedWindow("Frame")
-    cv2.imshow("Frame", frame)
-    key = cv2.waitKey(1) & 0xFF
+#     # Find FPS
+#     cTime=time.time()
+#     fps=1/(cTime-pTime)
+#     pTime=cTime
+#     cv2.putText(frame,str(int(fps)),(10,70),cv2.FONT_ITALIC,2,(255,0,255),3)
+#     # show the output frame
+# #     cv2.startWindowThread()
+#     cv2.namedWindow("Frame")
+#     cv2.imshow("Frame", frame)
+#     key = cv2.waitKey(1) & 0xFF
 
-    # if the `q` key was pressed, break from the loop
-    if key == ord("q"):
-        break
+#     # if the `q` key was pressed, break from the loop
+#     if key == ord("q"):
+#         break
         
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
