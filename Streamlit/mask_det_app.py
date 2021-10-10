@@ -87,7 +87,7 @@ weightsPath = "Streamlit/Res10_300x300_ssd_iter_140000.caffemodel"
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 print("[INFO] loading face mask detector model...")
-maskNet = load_model('mask_det.hdf5')
+maskNet = load_model('Streamlit/mask_det.hdf5')
 
 thres=100
 
