@@ -5,7 +5,7 @@ from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 #import time
 from scipy.spatial import distance as dist
-import os
+#import os
 import cv2
 
 
