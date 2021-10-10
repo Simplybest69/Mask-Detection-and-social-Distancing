@@ -82,8 +82,8 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
     return (locs, preds)
 
 print("[INFO] loading face detector model...")
-prototxtPath = "deploy.prototxt"
-weightsPath = "Res10_300x300_ssd_iter_140000.caffemodel"
+prototxtPath = "Streamlit/deploy.prototxt"
+weightsPath = "Streamlit/Res10_300x300_ssd_iter_140000.caffemodel"
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 print("[INFO] loading face mask detector model...")
