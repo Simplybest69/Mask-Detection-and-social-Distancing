@@ -212,11 +212,16 @@ class VideoTransformer(VideoTransformerBase):
                     for i,(box, pred) in enumerate(zip(locs, preds)):
                     # unpack the bounding box and predictions
                         (startX, startY, endX, endY) = box
+                        (mask, withoutMask) = pred
+                     # determine the class label and color we'll use to draw
+                     # the bounding box and text
+                        label = "Mask" if mask > withoutMask else "No Mask"
                         final_color=green
                         final_label= "No Risk"
-                        cv2.putText(frame,final_label, (startX, startY - 10),
+                        cv2.putText(frame,label, (startX, startY - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.45, final_color, 2)
                         cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
+                        cv2.putText(frame, final_label, (endX-30, endY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
                     
                  # Find FPS
 #                  cTime=time.time()
