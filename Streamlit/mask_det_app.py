@@ -207,7 +207,7 @@ class VideoTransformer(VideoTransformerBase):
 
                   
                 
-           elif(len(locs)==1):
+             elif(len(locs)==1):
                     for i,(box, pred) in enumerate(zip(locs, preds)):
                     # unpack the bounding box and predictions
                         (startX, startY, endX, endY) = box
