@@ -172,7 +172,7 @@ class VideoTransformer(VideoTransformerBase):
                          color = red
                          distance="Near"
                         
-                     distance_lb.append(distance)
+#                      distance_lb.append(distance)
                     
                      g=6
                      cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
@@ -194,9 +194,9 @@ class VideoTransformer(VideoTransformerBase):
                      # the bounding box and text
                      label = "Mask" if mask > withoutMask else "No Mask"
                      color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
-                     final_label,final_color=labelling(distance_lb[i],label)  
-                     cv2.putText(frame, final_label, (endX-30, endY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
-#                      cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
+#                      final_label,final_color=labelling(distance_lb[i],label)  
+#                      cv2.putText(frame, final_label, (endX-30, endY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
+# #                      cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
 
 
 
@@ -207,15 +207,15 @@ class VideoTransformer(VideoTransformerBase):
 
                   
                 
-           elif(len(locs)==1):
-                    for i,(box, pred) in enumerate(zip(locs, preds)):
-                    # unpack the bounding box and predictions
-                        (startX, startY, endX, endY) = box
-                        final_color=green
-                        final_label= "No Risk"
-                        cv2.putText(frame,final_label, (startX, startY - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, final_color, 2)
-                        cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
+#            elif(len(locs)==1):
+#                     for i,(box, pred) in enumerate(zip(locs, preds)):
+#                     # unpack the bounding box and predictions
+#                         (startX, startY, endX, endY) = box
+#                         final_color=green
+#                         final_label= "No Risk"
+#                         cv2.putText(frame,final_label, (startX, startY - 10),
+#                         cv2.FONT_HERSHEY_SIMPLEX, 0.45, final_color, 2)
+#                         cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
                     
                  # Find FPS
 #                  cTime=time.time()
