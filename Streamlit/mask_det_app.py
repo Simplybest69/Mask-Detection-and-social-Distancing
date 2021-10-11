@@ -17,7 +17,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
     # grab the dimensions of the frame and then construct a blob
     # from it
     (h, w) = frame.shape[:2]
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300),
+    blob = cv2.dnn.blobFromImage(frame, 1.0, (500, 500),
         (104.0, 177.0, 123.0))
 
     # pass the blob through the network and obtain the face detections
@@ -38,7 +38,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 
         # filter out weak detections by ensuring the confidence is
         # greater than the minimum confidence
-        if confidence > 0.6:
+        if confidence > 0.4:
             # compute the (x, y)-coordinates of the bounding box for
             # the object
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
@@ -108,10 +108,31 @@ def violating_points(cent):
     #     print(voilate)
     return voilate
 
+def labelling(NNear,mask):
+    red=(0,0,255)
+    green =(0,255,0)
+    yellow = (0,255,255)
+    color = []
+    final_lab=""
+    if(mask=="Mask" and NNear =="Not Near"):
+        final_lab="Low Risk"
+        color=green
+    elif ((mask=="No Mask" and NNear =="Not Near") or (mask=="Mask" and NNear =="Near")):
+        final_lab = "Risk" 
+        color=yellow
+    elif (mask=="No Mask" and NNear =="Near"):
+        final_lab="High Risk"
+        color =red
+        
+    return (final_lab,color)
+
+
 pTime =0
 cTime=0
 
-
+red=(0,0,255)
+green =(0,255,0)
+yellow = (0,255,255)
 
 class VideoTransformer(VideoTransformerBase):
     def __init__(self):
@@ -124,9 +145,9 @@ class VideoTransformer(VideoTransformerBase):
              #frame = cv2.resize(img, (600,600))
              (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
 
-
+             distance_lb=[]
              #Finding distance if there are more than 1 people
-             if(len(locs)>=1):
+             if(len(locs)>1):
 
                  #Finding the Centriods b/w people
                  cent =find_centroids(locs)
@@ -150,32 +171,52 @@ class VideoTransformer(VideoTransformerBase):
                      if(i in voilate):
                          color = red
                          distance="Near"
+                        
+                     distance_lb.append(distance)
+                    
                      g=6
                      cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
                      cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
                      cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                        
+                        
 
 
-             #For Mask
-             # loop over the detected face locations and their corresponding
-             # locations
-             for (box, pred) in zip(locs, preds):
-                 # unpack the bounding box and predictions
-                 (startX, startY, endX, endY) = box
-                 (mask, withoutMask) = pred
+                 #For Mask
+                 # loop over the detected face locations and their corresponding
+                 # locations
+                 for i,(box, pred) in enumerate(zip(locs, preds)):
+                     # unpack the bounding box and predictions
+                     (startX, startY, endX, endY) = box
+                     (mask, withoutMask) = pred
 
-                 # determine the class label and color we'll use to draw
-                 # the bounding box and text
-                 label = "Mask" if mask > withoutMask else "No Mask"
-                 color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+                     # determine the class label and color we'll use to draw
+                     # the bounding box and text
+                     label = "Mask" if mask > withoutMask else "No Mask"
+                     color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+                     final_label,final_color=labelling(distance_lb[i],label)  
+                     cv2.putText(frame, final_label, (endX-30, endY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
+#                      cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
 
-                 # include the probability in the label
-                 label = "{} ".format(label)
 
-                 # display the label and bounding box rectangle on the output
-                 # frame
-                 cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-                 cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+
+                     # display the label and bounding box rectangle on the output
+                     # frame
+                     cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                     cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+
+                  
+                
+           elif(len(locs)==1):
+                    for i,(box, pred) in enumerate(zip(locs, preds)):
+                    # unpack the bounding box and predictions
+                        (startX, startY, endX, endY) = box
+                        final_color=green
+                        final_label= "No Risk"
+                        cv2.putText(frame,final_label, (startX, startY - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, final_color, 2)
+                        cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
+                    
                  # Find FPS
 #                  cTime=time.time()
 #                  fps=1/(cTime-pTime)
