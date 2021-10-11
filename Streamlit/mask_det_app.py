@@ -130,15 +130,16 @@ def labelling(NNear,mask):
 pTime =0
 cTime=0
 
-red=(0,0,255)
-green =(0,255,0)
-yellow = (0,255,255)
 
 class VideoTransformer(VideoTransformerBase):
     def __init__(self):
         self.i = 0
 
     def transform(self, frame):
+             
+             red=(0,0,255)
+             green =(0,255,0)
+             yellow = (0,255,255)
              img = frame.to_ndarray(format="bgr24")
              frame = img
              # face mask or not
