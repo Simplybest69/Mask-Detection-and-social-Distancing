@@ -196,7 +196,7 @@ class VideoTransformer(VideoTransformerBase):
                      label = "Mask" if mask > withoutMask else "No Mask"
                      color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
                      final_label,final_color=labelling(distance_lb[i],label)  
-                     cv2.putText(frame, final_label, (endX-30, endY - 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
+                     cv2.putText(frame, final_label, (endX-30, endY + 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
 #                      cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
 
 
@@ -221,7 +221,7 @@ class VideoTransformer(VideoTransformerBase):
                         cv2.putText(frame,label, (startX, startY - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.45, final_color, 2)
                         cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
-                        cv2.putText(frame, final_label, (endX-30, endY + 30),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
+                        cv2.putText(frame, final_label, (endX-30, endY + 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
                     
                  # Find FPS
 #                  cTime=time.time()
