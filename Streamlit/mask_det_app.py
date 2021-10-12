@@ -178,7 +178,7 @@ class VideoTransformer(VideoTransformerBase):
                      g=6
                      cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
                      cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
-                     cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                     cv2.putText(frame, distance, (startX, endY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2) 
                         
                         
 
