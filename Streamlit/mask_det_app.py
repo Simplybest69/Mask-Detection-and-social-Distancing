@@ -4,26 +4,20 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 import numpy as np
 #import time
+from PIL import Image
 from scipy.spatial import distance as dist
 #import os
 import cv2
-
+from streamlit_webrtc import VideoTransformerBase, webrtc_streamer, ClientSettings
 
 import streamlit as st
-st.write("""
-         # Mask Detection and Social Distancing
-         """
-         )
-st.write("###########")
-file = st.file_uploader("Please upload an image file", type=["jpg", "png","jpeg"])
-choose_model = st.selectbox('Select a trained model:', ('EfficientNet','MobileNet'))
 
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
     # grab the dimensions of the frame and then construct a blob
     # from it
     (h, w) = frame.shape[:2]
-    blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300),
+    blob = cv2.dnn.blobFromImage(frame, 1.0, (400, 400),
         (104.0, 177.0, 123.0))
 
     # pass the blob through the network and obtain the face detections
@@ -44,7 +38,7 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 
         # filter out weak detections by ensuring the confidence is
         # greater than the minimum confidence
-        if confidence > 0.6:
+        if confidence > 0.4:
             # compute the (x, y)-coordinates of the bounding box for
             # the object
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
@@ -87,7 +81,7 @@ weightsPath = "Streamlit/Res10_300x300_ssd_iter_140000.caffemodel"
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 print("[INFO] loading face mask detector model...")
-maskNet = load_model('mask_det.hdf5')
+maskNet = load_model('Streamlit/mask_det.hdf5')
 
 thres=100
 
@@ -114,8 +108,27 @@ def violating_points(cent):
     #     print(voilate)
     return voilate
 
-from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
+def labelling(NNear,mask):
+    red=(0,0,255)
+    green =(0,255,0)
+    yellow = (0,255,255)
+    color = []
+    final_lab=""
+    if(mask=="Mask" and NNear =="Not Near"):
+        final_lab="Low Risk"
+        color=green
+    elif ((mask=="No Mask" and NNear =="Not Near") or (mask=="Mask" and NNear =="Near")):
+        final_lab = "Risk" 
+        color=yellow
+    elif (mask=="No Mask" and NNear =="Near"):
+        final_lab="High Risk"
+        color =red
+        
+    return (final_lab,color)
 
+
+pTime =0
+cTime=0
 
 
 class VideoTransformer(VideoTransformerBase):
@@ -123,15 +136,19 @@ class VideoTransformer(VideoTransformerBase):
         self.i = 0
 
     def transform(self, frame):
-             img = frame.to_ndarray(format="bgr24")
              
+             red=(0,0,255)
+             green =(0,255,0)
+             yellow = (0,255,255)
+             img = frame.to_ndarray(format="bgr24")
+             frame = img
              # face mask or not
-             frame = cv2.resize(img, (600,600))
-             (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
+             #frame = cv2.resize(img, (600,600))
+             (locs, preds) = detect_and_predict_mask(frame, faceNet, maskNet)
 
-
+             distance_lb=[]
              #Finding distance if there are more than 1 people
-             if(len(locs)>=1):
+             if(len(locs)>1):
 
                  #Finding the Centriods b/w people
                  cent =find_centroids(locs)
@@ -155,73 +172,86 @@ class VideoTransformer(VideoTransformerBase):
                      if(i in voilate):
                          color = red
                          distance="Near"
+                        
+                     distance_lb.append(distance)
+                    
                      g=6
                      cv2.rectangle(frame, (startX+g, startY-g), (endX-g, endY+g), color, 2)
                      cv2.circle(frame, (int(cx), int(cy)), 4, color, 3)
-                     cv2.putText(frame, distance, (endX-30, endY + 20),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                     cv2.putText(frame, distance, (startX, endY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2) 
+                        
+                        
 
 
-             #For Mask
-             # loop over the detected face locations and their corresponding
-             # locations
-             for (box, pred) in zip(locs, preds):
-                 # unpack the bounding box and predictions
-                 (startX, startY, endX, endY) = box
-                 (mask, withoutMask) = pred
+                 #For Mask
+                 # loop over the detected face locations and their corresponding
+                 # locations
+                 for i,(box, pred) in enumerate(zip(locs, preds)):
+                     # unpack the bounding box and predictions
+                     (startX, startY, endX, endY) = box
+                     (mask, withoutMask) = pred
 
-                 # determine the class label and color we'll use to draw
-                 # the bounding box and text
-                 label = "Mask" if mask > withoutMask else "No Mask"
-                 color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+                     # determine the class label and color we'll use to draw
+                     # the bounding box and text
+                     label = "Mask" if mask > withoutMask else "No Mask"
+                     color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+                     final_label,final_color=labelling(distance_lb[i],label)  
+                     cv2.putText(frame, final_label, (endX-30, endY + 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
+#                      cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
 
-                 # include the probability in the label
-                 label = "{} ".format(label)
 
-                 # display the label and bounding box rectangle on the output
-                 # frame
-                 cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-                 cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+
+                     # display the label and bounding box rectangle on the output
+                     # frame
+                     cv2.putText(frame, label, (startX, startY - 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+                     cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+
+                  
+                
+             elif(len(locs)==1):
+                    for i,(box, pred) in enumerate(zip(locs, preds)):
+                    # unpack the bounding box and predictions
+                        (startX, startY, endX, endY) = box
+                        (mask, withoutMask) = pred
+                     # determine the class label and color we'll use to draw
+                     # the bounding box and text
+                        label = "Mask" if mask > withoutMask else "No Mask"
+                        final_color=green
+                        final_label= "No Risk"
+                        cv2.putText(frame,label, (startX, startY - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, final_color, 2)
+                        cv2.rectangle(frame, (startX, startY), (endX, endY), final_color, 2)
+                        cv2.putText(frame, final_label, (endX-30, endY + 10),cv2.FONT_HERSHEY_SIMPLEX, 0.45,final_color, 2)
+                    
+                 # Find FPS
+#                  cTime=time.time()
+#                  fps=1/(cTime-pTime)
+#                  pTime=cTime
+#                  cv2.putText(frame,str(int(fps)),(10,70),cv2.FONT_ITALIC,2,(255,0,255),3)
 
              return frame
 
-webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
 
 
 
 
 def run():
-    st.title("Face Detection using OpenCV")
-    activities = ["Image", "Webcam","video"]
-    # st.set_option('deprecation.showfileUploaderEncoding', False)
-    st.sidebar.markdown("# Choose Input Source")
-    choice = st.sidebar.selectbox("Choose among the given options:", activities)
-    link = '[©Developed by Spidy20](http://github.com/spidy20)'
-    st.sidebar.markdown(link, unsafe_allow_html=True)
-    if choice == 'Image':
-        st.markdown(
-            '''<h4 style='text-align: left; color: #d73b5c;'>* Mask Detection"</h4>''',
-            unsafe_allow_html=True)
-        img_file = st.file_uploader("Choose an Image", type=['jpg', 'jpeg', 'jfif', 'png'])
-        if img_file is not None:
-            img = np.array(Image.open(img_file))
-            img1 = cv2.resize(img, (350, 350))
-            place_h = st.beta_columns(2)
-            place_h[0].image(img1)
-            st.markdown(
-                '''<h4 style='text-align: left; color: #d73b5c;'>* Increase & Decrease it to get better accuracy.</h4>''',
-                unsafe_allow_html=True)
-
-            # scale_factor = st.slider("Set Scale Factor Value", min_value=1.1, max_value=1.9, step=0.10, value=1.3)
-            # min_Neighbors = st.slider("Set Scale Min Neighbors", min_value=1, max_value=9, step=1, value=5)
-            # fd, count, orignal_image = face_detect(img, scale_factor, min_Neighbors)
-            place_h[1].image(fd)
-            
-            st.markdown(get_image_download_link(result, img_file.name, 'Download Image'), unsafe_allow_html=True)
+    st.write("""
+         # Mask Detection and Social Distancing Detection
+         """
+         )
+#     activities = ["Covid Data Analysis", "Webcam"]
+#     st.markdown("# Choose Input Source")
+#     choice = st.selectbox("Choose among the given options:", activities)
+    choice = 'Webcam'
     if choice == 'Webcam':
-        st.markdown(
-            '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',
-            unsafe_allow_html=True)
-        webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
+            st.markdown( '''<h4 style='text-align: left; color: #d73b5c;'>* It might be not work with Android Camera"</h4>''',unsafe_allow_html=True)
+            st.write('NOTE: Try Running this in Chrome')
+            st.markdown( '''<h4 style='text-align: left; color: #3bd743;'>* Be patient this might take a min to load"</h4>''',unsafe_allow_html=True)
+                
+            webrtc_streamer(client_settings=ClientSettings(rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},media_stream_constraints={"video": True, "audio": False},),video_transformer_factory=VideoTransformer,key="normal",)
+        #webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
+            
 run()
 
 
