@@ -35,6 +35,12 @@ Size of Model after saving as a .hdf5 file : 12 MB
 
 This small size makes it easier for the model to be deployable on most of the platforms with ease.
 
+The final accuracy of the mask detection model is : 98%
+
+![image](https://user-images.githubusercontent.com/60337704/141739905-b6ec19c9-1c72-41a5-a846-dbe8cf206283.png)
+
+
+
 
 
   
