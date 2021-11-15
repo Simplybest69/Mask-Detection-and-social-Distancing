@@ -52,6 +52,8 @@ Finding distance b/w people wrt threshold.
 
 ![image](https://user-images.githubusercontent.com/60337704/141740267-18880031-24b1-4cd5-b354-886f0c940ca4.png)
 
+- - - -
+
 ### Combination of the Above:
 
 The face mask detection model and the estimation of distance between people have been combined to give the user a risk level based on the parameters.
@@ -79,8 +81,12 @@ The face mask detection model and the estimation of distance between people have
 #### Web App: 
 https://share.streamlit.io/kabilan-n/face-detection-and-social-distancing/main/Streamlit/mask_det_app.py
 
+- - - -
+
 #### Test Video: 
 https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
+
+- - - -
 
 
 
