@@ -27,6 +27,15 @@ The data is split into 80% for training and remaining 20% for testing.
 
 ![image](https://user-images.githubusercontent.com/60337704/141739606-5a79c3a8-48e3-4030-a436-ec83cc2ed124.png)
 
+     Input Shape : 224 x 224 x 3
+     Number Of Layers : 159
+     Trainable Parameters : 164,226
+
+Size of Model after saving as a .hdf5 file : 12 MB
+
+This small size makes it easier for the model to be deployable on most of the platforms with ease.
+
+
 
   
   
