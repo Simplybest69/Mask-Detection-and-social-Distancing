@@ -51,10 +51,10 @@ The face mask detection model and the estimation of distance between people have
 
 * If a person is alone and not wearing a mask - No Risk. 
 * If  more than one person : 
-         * If both are apart and wearing a mask - Low Risk
-         * If both are near and wearing a mask - Risk
-         * If both are apart and not wearing a mask - Risk
-         * If both are near and not wearing a mask - High Risk
+    * If both are apart and wearing a mask - Low Risk
+    * If both are near and wearing a mask - Risk
+* If both are apart and not wearing a mask - Risk
+    * If both are near and not wearing a mask - High Risk
 
 
 
