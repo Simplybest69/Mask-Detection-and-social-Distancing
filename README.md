@@ -44,6 +44,8 @@ The final accuracy of the mask detection model is : 98%
 
 ![image](https://user-images.githubusercontent.com/60337704/141739905-b6ec19c9-1c72-41a5-a846-dbe8cf206283.png)
 
+- - - -
+
 ### Social Distancing :
 
 Finding distance b/w people wrt threshold.
@@ -63,12 +65,16 @@ The face mask detection model and the estimation of distance between people have
 
 ![image](https://user-images.githubusercontent.com/60337704/141741264-3a04071c-09a3-4ab4-94e1-6e05fb80c63d.png)
 
+- - - -
+
 ### Future Works:
 
 * Deployment of the complete model using multiple cameras at different locations, to obtain inputs from different directions.
 * Notifying the person captured in the camera (Access to public database is needed), as well as authorities.
 * Using heat sensors to detect a relation between the temperature and the known factors to provide a more accurate risk value.
 * With the knowledge of risk in various areas, creating a path or a route that has the least risk possible in public places.
+
+- - - -
 
 #### Web App: 
 https://share.streamlit.io/kabilan-n/face-detection-and-social-distancing/main/Streamlit/mask_det_app.py
