@@ -7,8 +7,8 @@ This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA*
 #### Face Mask Detection :
 The dataset consists of 4092 images.
 
- Markup : * With_Mask : 2162 images
-          * Without_Mask : 1932 images
+* With_Mask : 2162 images
+* Without_Mask : 1932 images
 
 
 
