@@ -20,7 +20,7 @@ The data is split into 80% for training and remaining 20% for testing.
 
 #### Additional data augmentation is done on the following parameters :
 
- Markup : * rotation_range
+          * rotation_range
           * zoom_range
           * width_shift_range
           * shear_range
