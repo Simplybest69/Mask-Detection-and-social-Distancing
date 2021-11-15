@@ -2,7 +2,7 @@
 
 This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA**. 
 
-### Dataset - 
+#### Dataset - 
 
 #### Face Mask Detection :
 The dataset consists of 4092 images.
@@ -23,7 +23,7 @@ The data is split into 80% for training and remaining 20% for testing.
           * horizontal_flip
           * fill_mode
           
-### Model Details:   
+#### Model Details:   
 
 ![image](https://user-images.githubusercontent.com/60337704/141739606-5a79c3a8-48e3-4030-a436-ec83cc2ed124.png)
 
@@ -38,6 +38,29 @@ This small size makes it easier for the model to be deployable on most of the pl
 The final accuracy of the mask detection model is : 98%
 
 ![image](https://user-images.githubusercontent.com/60337704/141739905-b6ec19c9-1c72-41a5-a846-dbe8cf206283.png)
+
+#### Social Distancing :
+
+Finding distance b/w people wrt threshold.
+
+![image](https://user-images.githubusercontent.com/60337704/141740267-18880031-24b1-4cd5-b354-886f0c940ca4.png)
+
+#### Combination of the Above:
+
+The face mask detection model and the estimation of distance between people have been combined to give the user a risk level based on the parameters.
+
+* If a person is alone and not wearing a mask - No Risk. 
+* If  more than one person : 
+         * If both are apart and wearing a mask - Low Risk
+         * If both are near and wearing a mask - Risk
+         * If both are apart and not wearing a mask - Risk
+         * If both are near and not wearing a mask - High Risk
+
+
+
+
+
+
 
 
 
