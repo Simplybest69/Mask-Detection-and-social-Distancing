@@ -1,4 +1,4 @@
-# Mask-and-social-Distancing detection
+# Mask-Detection-and-Social-Distancing 
 
 This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA**. 
 
