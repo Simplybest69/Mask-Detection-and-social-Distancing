@@ -2,10 +2,12 @@
 
 This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA**. 
 
+
+
+
+### Face Mask Detection :
+
 #### Dataset - https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
-
-
-#### Face Mask Detection :
 The dataset consists of 4092 images.
 
 * With_Mask : 2162 images
@@ -24,7 +26,7 @@ The data is split into 80% for training and remaining 20% for testing.
           * horizontal_flip
           * fill_mode
           
-#### Model Details:   
+### Model Details:   
 
 ![image](https://user-images.githubusercontent.com/60337704/141739606-5a79c3a8-48e3-4030-a436-ec83cc2ed124.png)
 
@@ -40,13 +42,13 @@ The final accuracy of the mask detection model is : 98%
 
 ![image](https://user-images.githubusercontent.com/60337704/141739905-b6ec19c9-1c72-41a5-a846-dbe8cf206283.png)
 
-#### Social Distancing :
+### Social Distancing :
 
 Finding distance b/w people wrt threshold.
 
 ![image](https://user-images.githubusercontent.com/60337704/141740267-18880031-24b1-4cd5-b354-886f0c940ca4.png)
 
-#### Combination of the Above:
+### Combination of the Above:
 
 The face mask detection model and the estimation of distance between people have been combined to give the user a risk level based on the parameters.
 
@@ -59,7 +61,7 @@ The face mask detection model and the estimation of distance between people have
 
 ![image](https://user-images.githubusercontent.com/60337704/141741264-3a04071c-09a3-4ab4-94e1-6e05fb80c63d.png)
 
-#### Future Works:
+### Future Works:
 
 * Deployment of the complete model using multiple cameras at different locations, to obtain inputs from different directions.
 * Notifying the person captured in the camera (Access to public database is needed), as well as authorities.
