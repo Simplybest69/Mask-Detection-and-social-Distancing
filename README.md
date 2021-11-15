@@ -26,6 +26,8 @@ The data is split into 80% for training and remaining 20% for testing.
           * horizontal_flip
           * fill_mode
           
+ - - - -
+          
 ### Model Details:   
 
 ![image](https://user-images.githubusercontent.com/60337704/141739606-5a79c3a8-48e3-4030-a436-ec83cc2ed124.png)
