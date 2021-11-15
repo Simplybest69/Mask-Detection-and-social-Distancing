@@ -2,7 +2,8 @@
 
 This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA**. 
 
-#### Dataset - 
+#### Dataset - https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
+
 
 #### Face Mask Detection :
 The dataset consists of 4092 images.
@@ -67,6 +68,10 @@ The face mask detection model and the estimation of distance between people have
 
 #### Web App: 
 https://share.streamlit.io/kabilan-n/face-detection-and-social-distancing/main/Streamlit/mask_det_app.py
+
+#### Test Video: 
+https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
+
 
 
 
