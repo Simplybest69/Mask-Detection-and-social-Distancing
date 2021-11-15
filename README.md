@@ -49,12 +49,25 @@ Finding distance b/w people wrt threshold.
 
 The face mask detection model and the estimation of distance between people have been combined to give the user a risk level based on the parameters.
 
-* If a person is alone and not wearing a mask - No Risk. 
+* If a person is alone and not wearing a mask - **No Risk**. 
 * If  more than one person : 
-    * If both are apart and wearing a mask - Low Risk
-    * If both are near and wearing a mask - Risk
-* If both are apart and not wearing a mask - Risk
-    * If both are near and not wearing a mask - High Risk
+    * If both are apart and wearing a mask - **Low Risk**.
+    * If both are near and wearing a mask - **Risk**.
+    * If both are apart and not wearing a mask - **Risk**.
+    * If both are near and not wearing a mask - **High Risk**.
+
+![image](https://user-images.githubusercontent.com/60337704/141741264-3a04071c-09a3-4ab4-94e1-6e05fb80c63d.png)
+
+#### Future Works:
+
+* Deployment of the complete model using multiple cameras at different locations, to obtain inputs from different directions.
+* Notifying the person captured in the camera (Access to public database is needed), as well as authorities.
+* Using heat sensors to detect a relation between the temperature and the known factors to provide a more accurate risk value.
+* With the knowledge of risk in various areas, creating a path or a route that has the least risk possible in public places.
+
+#### Web App: 
+https://share.streamlit.io/kabilan-n/face-detection-and-social-distancing/main/Streamlit/mask_det_app.py
+
 
 
 
