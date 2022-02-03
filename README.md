@@ -1,6 +1,6 @@
 # Mask-Detection-and-Social-Distancing 
 
-This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA**. 
+This was done for the India Academia Connect AI Hackathon 2022 conducted by **NVIDIA**. 
 
 
 
@@ -8,15 +8,17 @@ This was done for the India Academia Connect AI Hackathon conducted by **NVIDIA*
 ### Face Mask Detection :
 
 #### Dataset - https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
+
 The dataset consists of 4092 images.
 
 * With_Mask : 2162 images
 * Without_Mask : 1932 images
 
-The images are resized to *224 x 224 x 3* and the input pixel values are scaled between -1 and 1.
+The images are resized to *224 x 224 x 3* and the input pixel values are normalized between -1 and 1.
 
 The data is split into 80% for training and remaining 20% for testing.
 
+Since the data present was not enough to obtain a high enough accuracy, 
 #### Additional data augmentation is done on the following parameters :
 
           * rotation_range
@@ -66,27 +68,6 @@ The face mask detection model and the estimation of distance between people have
     * If both are near and not wearing a mask - **High Risk**.
 
 ![image](https://user-images.githubusercontent.com/60337704/141741264-3a04071c-09a3-4ab4-94e1-6e05fb80c63d.png)
-
-- - - -
-
-### Future Works:
-
-* Deployment of the complete model using multiple cameras at different locations, to obtain inputs from different directions.
-* Notifying the person captured in the camera (Access to public database is needed), as well as authorities.
-* Using heat sensors to detect a relation between the temperature and the known factors to provide a more accurate risk value.
-* With the knowledge of risk in various areas, creating a path or a route that has the least risk possible in public places.
-
-- - - -
-
-#### Web App: 
-https://share.streamlit.io/kabilan-n/face-detection-and-social-distancing/main/Streamlit/mask_det_app.py
-
-- - - -
-
-#### Test Video: 
-https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
-
-- - - -
 
 
 
