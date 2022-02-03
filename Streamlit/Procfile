@@ -1,1 +1,0 @@
-web: sh setup.sh && streamlit run mask_det_app.py
