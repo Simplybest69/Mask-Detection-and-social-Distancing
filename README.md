@@ -2,21 +2,29 @@
 
 This was done for the India Academia Connect AI Hackathon 2022 conducted by **NVIDIA**. 
 
+The certificate for participation has been included in the repo, under the file name : IndiaAI_Hackathon_Sai Ganesh.pdf
 
+The process or steps followed by the model are :
 
+1. Detect the type of input, Image/Video stream.
+2. Detect and find the location of the faces present in the stream.
+3. Using the mask_det model, find the presence of a face mask on the found location.
+4. Find the distance between people present in the stream.
+5. Classify the risk category based on the above properties (Mask and distance).
+
+The training of face mask detection has been done using various models such as resnet and vgg, the best 
+performing(Accuracy) has been choosen for the hackathon.
 
 ### Face Mask Detection :
 
 #### Dataset - https://drive.google.com/file/d/14AMs4ockT6Cp-Q5bevdXSYH_GDgLqb9x/view?usp=sharing
 
-The dataset consists of 4092 images.
+The dataset consists of 4092 images after data augmentation.
 
-* With_Mask : 2162 images
-* Without_Mask : 1932 images
+* With_Mask = 2162 Images
+* Without_Mask = 1932 Images
 
 The images are resized to *224 x 224 x 3* and the input pixel values are normalized between -1 and 1.
-
-The data is split into 80% for training and remaining 20% for testing.
 
 Since the data present was not enough to obtain a high enough accuracy, 
 #### Additional data augmentation is done on the following parameters :
